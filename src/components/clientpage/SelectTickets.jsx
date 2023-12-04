@@ -4,57 +4,25 @@ import Delfines from '../../img/delfines.jpeg';
 import Estudiantes from '../../img/estudiantes.jpeg';
 import Canguro from '../../img/canguro.png';
 import Oferta from '../../img/gran-venta.png';
-import { Button, Col, Container, Form, Row } from "react-bootstrap"
+import { Button, Col, Container, Form, Row, Toast, ToastContainer } from "react-bootstrap"
 import { useState } from 'react';
 import Offers from './Offers';
 
-const SelectTickets = () => {
-
-    const [individual, setIndividual] = useState(0)
-    const [individualTotal, setIndividualTotal] = useState(0.00)
-
-    const handleIndividual = (quantity) => {
-        setIndividual(quantity)
-        var total = quantity * 10
-        setIndividualTotal(total)
-        setTotal(total + elderlyTotal + childTotal + studentTotal)
-    }
-
-    const [elderly, setElderly] = useState(0)
-    const [elderlyTotal, setElderlyTotal] = useState(0.00)
-
-    const handleElderly = (quantity) => {
-        setElderly(quantity)
-        var total = quantity * 30
-        setElderlyTotal(total)
-        setTotal(individualTotal + total + childTotal + studentTotal)
-    }
-
-    const [child, setChild] = useState(0)
-    const [childTotal, setChildTotal] = useState(0.00)
-
-    const handleChild = (quantity) => {
-        setChild(quantity)
-        var total = quantity * 40
-        setChildTotal(total)
-        setTotal(individualTotal + elderlyTotal + total + studentTotal)
-    }
-
-    const [student, setStudent] = useState(0)
-    const [studentTotal, setStudentTotal] = useState(0.00)
-
-    const handleStudent = (quantity) => {
-        setStudent(quantity)
-        var total = quantity * 50
-        setStudentTotal(total)
-        setTotal(individualTotal + elderlyTotal + childTotal + total)
-    }
-
-    const [total, setTotal] = useState(0)
+const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly, handleElderly, elderlyTotal, child, handleChild, childTotal, student, handleStudent, studentTotal, total, handleNext }) => {
 
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
+
+    const [showToast, setShowToast] = useState(false)
+
+    const handlePay = () => {
+        if (total > 0) {
+            handleNext()
+        } else {
+            setShowToast(true)
+        }
+    }
 
     return (
         <Container fluid className='d-flex p-0'>
@@ -213,7 +181,19 @@ const SelectTickets = () => {
                 </Container>
                 <hr className='my-5' />
                 <div className='d-flex align-items-end'>
-                    <Button variant='success' className='ms-auto me-3'>Continuar con la compra</Button>
+                    <ToastContainer
+                        className="p-3"
+                        position={'bottom-end'}
+                        style={{ zIndex: 1 }}
+                    >
+                        <Toast autohide animation show={showToast} onClose={() => setShowToast(false)} delay={3000} style={{ backgroundColor: '#630502' }}>
+                            <Toast.Header closeButton={true} style={{ backgroundColor: '#990b06' }} closeVariant='white'>
+                                <strong className="me-auto fs-5 text-white">Error</strong>
+                            </Toast.Header>
+                            <Toast.Body className='text-white fs-6'>Debes seleccionar al menos un ticket</Toast.Body>
+                        </Toast>
+                    </ToastContainer>
+                    <Button variant='success' className='ms-auto me-3' onClick={handlePay}>Continuar con la compra</Button>
                 </div>
             </Container>
         </Container>
