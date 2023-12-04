@@ -1,10 +1,12 @@
-import Panda from '../img/panda.jpeg';
-import Adultos from '../img/adultos.jpeg';
-import Delfines from '../img/delfines.jpeg';
-import Estudiantes from '../img/estudiantes.jpeg';
-import Canguro from '../img/canguro.png';
+import Panda from '../../img/panda.jpeg';
+import Adultos from '../../img/adultos.jpeg';
+import Delfines from '../../img/delfines.jpeg';
+import Estudiantes from '../../img/estudiantes.jpeg';
+import Canguro from '../../img/canguro.png';
+import Oferta from '../../img/gran-venta.png';
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import { useState } from 'react';
+import Offers from './Offers';
 
 const SelectTickets = () => {
 
@@ -44,16 +46,27 @@ const SelectTickets = () => {
     const handleStudent = (quantity) => {
         setStudent(quantity)
         var total = quantity * 50
-        setStudentTotal(quantity * 50)
+        setStudentTotal(total)
         setTotal(individualTotal + elderlyTotal + childTotal + total)
     }
 
     const [total, setTotal] = useState(0)
 
+    const [show, setShow] = useState(false)
+    const handleShow = () => setShow(true)
+    const handleClose = () => setShow(false)
+
     return (
         <Container fluid className='d-flex p-0'>
+            <Offers show={show} handleClose={handleClose} />
             <Container className='mt-3 px-5' style={{ width: '70%' }}>
-                <h1 className='fw-semibold mb-3'>Comprar entradas</h1>
+                <div className='d-flex align-items-center mb-3'>
+                    <h1 className='fw-semibold mb-0 me-auto'>Comprar entradas</h1>
+                    <Button size='lg' variant='dark' className='d-flex align-items-center rounded-5' onClick={handleShow}>
+                        <img src={Oferta} alt='Oferta' className='me-2' width={30} />
+                        Ver ofertas
+                    </Button>
+                </div>
                 <h5 className='fw-medium mb-3'>¿Quieres pasar un día único aprendiendo todo sobre los animales?</h5>
                 <p>Tu decides la aventura y nosotros la hacemos posible en ZOO</p>
                 <Row xs={1} md={1} lg={2} className='g-4'>

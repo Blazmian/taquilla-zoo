@@ -2,11 +2,12 @@ import React from 'react';
 import Logo from './img/zoo-logo.png';
 import LogoLetras from './img/logo-letras.png';
 import { Navbar } from 'react-bootstrap';
-import SelectTickets from './components/SelectTickets';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Tickets from './components/Tickets';
+import SelectTickets from './components/clientpage/SelectTickets';
 
 const App = () => {
+
   return (
     <Router>
       <>
