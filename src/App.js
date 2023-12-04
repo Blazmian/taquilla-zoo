@@ -2,9 +2,10 @@ import React from 'react';
 import Logo from './img/zoo-logo.png';
 import LogoLetras from './img/logo-letras.png';
 import { Navbar } from 'react-bootstrap';
-import SelectTickets from './components/SelectTickets';
+import SelectTickets from './components/clientpage/SelectTickets';
 
 const App = () => {
+
   return (
     <>
       <Navbar className="nav-body p-0">

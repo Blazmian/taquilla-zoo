@@ -27,3 +27,10 @@
 .ticket-card input {
     width: 4em;
 }
+
+.headerOffers {
+    background-image: url('../img/zoo-fau-dt-comprar.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 15vh;
+}
