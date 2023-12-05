@@ -4,10 +4,14 @@ import LogoLetras from './img/logo-letras.png';
 import { Navbar } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Tickets from './components/Tickets';
+<<<<<<< Updated upstream
 import SelectTickets from './components/clientpage/SelectTickets';
+=======
+import Resume from './components/Resume';
+import ClientInterface from './components/clientpage/ClientInterface';
+>>>>>>> Stashed changes
 
 const App = () => {
-
   return (
     <Router>
       <>
@@ -24,6 +28,7 @@ const App = () => {
       <Routes>
         <Route path="/seleccionar-ticket" element={<SelectTickets />} />
         <Route path="/taquilla" element={<Tickets />} />
+        <Route path="/resumen" element={<Resume />} />
       </Routes>
  
       </>

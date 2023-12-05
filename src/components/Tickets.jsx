@@ -1,7 +1,6 @@
-
-import { Button, Col, Container, Form, Row, Alert, Modal } from "react-bootstrap"
+import Resume from './Resume';
+import { Button, Col, Container, Form, Row, Alert, Modal } from "react-bootstrap";
 import { useState, useEffect } from 'react';
-
 
 const Tickets = () => {
 
@@ -9,8 +8,10 @@ const Tickets = () => {
     const [individualTotal, setIndividualTotal] = useState(0.00) //Total entrada individual
     const [value, setValue] = useState(''); //Cantidad de efectivo con el que se pagó
     const [showModal, setShowModal] = useState(false);
-    const [visitorName, setVisitorName] = useState(''); //Nombre visitante
-    const [visitorLastName, setVisitorLastName] = useState(''); //Apellido visitante
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
     const [errorMessage, setErrorMessage] = useState(''); //Mensaje de error
     const [change, setChange] = useState(''); //Cambio a regresar
     const [elderly, setElderly] = useState(0) //Entradas de adultos mayores
@@ -73,13 +74,15 @@ const Tickets = () => {
         setErrorMessage('');
     };
     // Verifica si estás ingresando el nombre o el apellido
-    const handleInputNames = (e) => {
-        const { name, value } = e.target;
+    const handleVisitorData = () => {
+        if (!email.trim() || !phone.trim()) {
+            setErrorMessage('Por favor, ingresa el correo y el teléfono.');
+            return;
+        }
 
-        if (name === 'firstName') {
-            setVisitorName(value);
-        } else if (name === 'lastName') {
-            setVisitorLastName(value);
+        if (total > 0 && total <= value) {
+            setPurchaseSuccess(true);
+            setShowModal(true);
         }
     };
     //Calcula el cambio a partir del total de boletos y la cantidad de dinero entregada.
@@ -93,20 +96,52 @@ const Tickets = () => {
             setErrorMessage(result >= 0 ? '' : 'La cantidad no puede ser menor al total de boletos seleccionados.');
         }
     }, [value, total]);
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email) ? '' : 'Ingresa un correo electrónico válido.';
+    };
+
+    const validatePhone = (phone) => {
+        const regex = /^\d{10}$/;
+        return regex.test(phone) ? '' : 'Ingresa un número de teléfono válido.';
+    };
+    const handleEmailChange = (e) => {
+        const inputValue = e.target.value;
+        setEmail(inputValue);
+        setEmailError(validateEmail(inputValue));
+    };
+
+    const handlePhoneChange = (e) => {
+        const inputValue = e.target.value;
+        setPhone(inputValue);
+        setPhoneError(validatePhone(inputValue));
+    };
+    const [ticketInfo, setTicketInfo] = useState(null);
 
     const handlePurchase = () => {
         //Obligatorio llenar los campos de nombre
-        if ((!visitorName || visitorName.trim() === '') && (!visitorLastName || visitorLastName.trim() === '')) {
-            setErrorMessage('Por favor, ingresa el nombre del visitante.');
+        if ((!email || email.trim() === '') && (!phone || phone.trim() === '')) {
+            setErrorMessage('Por favor, ingresa la información del visitante.');
             return;
         }
         //campos de dinero deben estar llenos para completar la compra
         if (total > 0 && total <= value && value > 0) {
+            const newTicketInfo = {
+                email,
+                phone,
+                total,
+                value,
+                individual,
+                child,
+                elderly,
+                student,
+            };
             setPurchaseSuccess(true);
             setShowModal(true);
-            //Limpiar campos
-            setVisitorName('');
-            setVisitorLastName('');
+            setTicketInfo(newTicketInfo);
+            // Limpiar campos
+            setEmail('');
+            setPhone('');
             setValue('');
             setTotal(0);
             setChange('0');
@@ -115,9 +150,21 @@ const Tickets = () => {
             setElderly('0')
             setStudent('0')
         }
+
     };
     const handleCloseModal = () => {
         setShowModal(false);
+    };
+    const ErrorMessage = ({ message, onClose }) => {
+        return (
+
+            <Alert variant='danger' className='position-fixed top-0 start-50 translate-middle-x'>
+                <div className='d-flex justify-content-between align-items-center'>
+                    <span>{message}</span>
+                    <button type='button' className='btn-close' onClick={onClose} />
+                </div>
+            </Alert>
+        );
     };
 
     return (
@@ -132,24 +179,26 @@ const Tickets = () => {
                                 <h6 className='mb-0 me-auto'>Ingresa el nombre del visitante.</h6>
                             </div>
                             <div className='div-visitor-data mt-2 '>
-                                <h6 className='mb-0'>Nombre</h6>
+                                <h6 className='mb-0' >Correo</h6>
                                 <Form.Control
-                                    name='firstName'
-                                    className='me-auto'
                                     type='text'
                                     size='sm'
-                                    value={visitorName}
-                                    onChange={handleInputNames}
-                                />
-                                <h6 className='mb-0 me-2'>Apellido</h6>
+                                    value={email}
+                                    onChange={handleEmailChange}
+                                    isInvalid={!!emailError}
+                                /> {emailError && (
+                                    <ErrorMessage message={emailError} onClose={() => setEmailError('')} />
+                                )}
+                                <h6 className='mb-0' >Teléfono</h6>
                                 <Form.Control
-                                    name='lastName'
-                                    className='me-auto'
                                     type='text'
                                     size='sm'
-                                    value={visitorLastName}
-                                    onChange={handleInputNames}
-                                />
+                                    value={phone}
+                                    onChange={handlePhoneChange}
+                                    isInvalid={!!phoneError}
+                                />{phoneError && (
+                                    <ErrorMessage message={phoneError} onClose={() => setPhoneError('')} />
+                                )}
                             </div>
                         </div>
                         <br></br>
@@ -220,27 +269,28 @@ const Tickets = () => {
                     {errorMessage && <Alert variant='danger' className='mt-3 me-5'>{errorMessage}</Alert>}
                 </div>
                 <div className='position-fixed bottom-0 end-0 p-3 px-5 py-5'>
-    <Button variant='success' onClick={handlePurchase} className="me-5">
-        Finalizar compra
-    </Button>
-</div>
+                    <Button variant='success' onClick={handlePurchase} className="me-5">
+                        Finalizar compra
+                    </Button>
+                </div>
                 <Container fluid className='d-flex p-0'>
                     <Modal show={showModal} onHide={handleCloseModal}>
                         <Modal.Header closeButton>
                             <Modal.Title>¡Compra exitosa!</Modal.Title>
                         </Modal.Header>
-                        <Modal.Body>
-                            <p>Se ha realizado la compra con éxito.</p>
+                        <Modal.Body>                           
+                            <Resume ticketInfo={ticketInfo} />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant='success' onClick={handleCloseModal}>
                                 Cerrar
                             </Button>
-                            <Button variant='success' onClick={handleCloseModal}>
+                            <Button variant='success' onClick={() => { handleCloseModal(); setTicketInfo(ticketInfo); }}>
                                 Imprimir recibo
                             </Button>
                         </Modal.Footer>
                     </Modal>
+
                 </Container>
             </Container>
         </Container>
