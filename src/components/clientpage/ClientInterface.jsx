@@ -14,6 +14,13 @@ const ClientInterface = () => {
         setStep(step - 1)
     }
 
+    const handleDiscount = (sumTotal) => {
+        const date = new Date()
+        if (date.getDay() === 2) {
+            setTotal(sumTotal * .5)
+        }
+    }
+
     const [individual, setIndividual] = useState(0)
     const [individualTotal, setIndividualTotal] = useState(0.00)
 
@@ -21,7 +28,8 @@ const ClientInterface = () => {
         setIndividual(quantity)
         var total = quantity * 10
         setIndividualTotal(total)
-        setTotal(total + elderlyTotal + childTotal + studentTotal)
+        const sum = total + elderlyTotal + childTotal + studentTotal
+        handleDiscount(sum)
     }
 
     const [elderly, setElderly] = useState(0)
@@ -31,7 +39,8 @@ const ClientInterface = () => {
         setElderly(quantity)
         var total = quantity * 30
         setElderlyTotal(total)
-        setTotal(individualTotal + total + childTotal + studentTotal)
+        const sum = individualTotal + total + childTotal + studentTotal
+        handleDiscount(sum)
     }
 
     const [child, setChild] = useState(0)
@@ -41,7 +50,8 @@ const ClientInterface = () => {
         setChild(quantity)
         var total = quantity * 40
         setChildTotal(total)
-        setTotal(individualTotal + elderlyTotal + total + studentTotal)
+        const sum = individualTotal + elderlyTotal + total + studentTotal
+        handleDiscount(sum)
     }
 
     const [student, setStudent] = useState(0)
@@ -51,7 +61,8 @@ const ClientInterface = () => {
         setStudent(quantity)
         var total = quantity * 50
         setStudentTotal(total)
-        setTotal(individualTotal + elderlyTotal + childTotal + total)
+        const sum = individualTotal + elderlyTotal + childTotal + total
+        handleDiscount(sum)
     }
 
     const [total, setTotal] = useState(0)
