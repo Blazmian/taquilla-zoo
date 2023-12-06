@@ -1,6 +1,9 @@
 import Resume from './Resume';
 import { Button, Col, Container, Form, Row, Alert, Modal } from "react-bootstrap";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import axios from "axios"
+import { ApiUrls } from "../tools/ApirUrls"
+import Swal from 'sweetalert2'
 
 const Tickets = () => {
 
@@ -22,7 +25,9 @@ const Tickets = () => {
     const [studentTotal, setStudentTotal] = useState(0.00) //Total entradas estudiantes
     const [total, setTotal] = useState(0) //Total a pagar
     const [purchaseSuccess, setPurchaseSuccess] = useState(false);
-
+    const urls = useContext(ApiUrls)
+    const [showToast, setShowToast] = useState(false)
+    const [toastMessage, setToastMessage] = useState('')
     const handleIndividual = (quantity) => {
         setIndividual(quantity)
         var total = quantity * 10
@@ -118,37 +123,78 @@ const Tickets = () => {
     };
     const [ticketInfo, setTicketInfo] = useState(null);
 
-    const handlePurchase = () => {
+    const handlePurchase = async () => {
         //Obligatorio llenar los campos de nombre
-        if ((!email || email.trim() === '') && (!phone || phone.trim() === '')) {
-            setErrorMessage('Por favor, ingresa la información del visitante.');
-            return;
-        }
-        //campos de dinero deben estar llenos para completar la compra
-        if (total > 0 && total <= value && value > 0) {
-            const newTicketInfo = {
-                email,
-                phone,
-                total,
-                value,
-                individual,
-                child,
-                elderly,
-                student,
-            };
-            setPurchaseSuccess(true);
-            setShowModal(true);
-            setTicketInfo(newTicketInfo);
-            // Limpiar campos
-            setEmail('');
-            setPhone('');
-            setValue('');
-            setTotal(0);
-            setChange('0');
-            setIndividual('0');
-            setChild('0')
-            setElderly('0')
-            setStudent('0')
+        if ((email.length * phone.length) > 0) {
+            const details = []
+            if (individual > 0) {
+                details.push({
+                    cantidad: individual,
+                    area: "General",
+                    precio_total: individualTotal,
+                    tipo_boleto: 1,
+                })
+            }
+
+            if (elderly > 0) {
+                details.push({
+                    cantidad: elderly,
+                    area: "General",
+                    precio_total: elderlyTotal,
+                    tipo_boleto: 2,
+                })
+            }
+
+            if (child > 0) {
+                details.push({
+                    cantidad: child,
+                    area: "General",
+                    precio_total: childTotal,
+                    tipo_boleto: 3,
+                })
+            }
+
+            if (student > 0) {
+                details.push({
+                    cantidad: student,
+                    area: "General",
+                    precio_total: studentTotal,
+                    tipo_boleto: 4,
+                })
+            }
+
+            const dateObject = new Date()
+            const date = `${dateObject.getFullYear()}-${dateObject.getMonth()}-${dateObject.getDate()}`
+
+            const dataSale = {
+                precio_total: total,
+                fecha: date,
+                email: email,
+                celular: phone,
+                id_vendedor: 0,
+                id_cliente: 0,
+                detalles: details,
+            }
+
+            const res = await axios.post(urls.createSale, dataSale)
+
+            if (res.data.ventaId > 0) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Exito",
+                    text: "Pedido realizado con exitosamente",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload()
+                    }
+                })
+            } else {
+                setToastMessage('Error al hacer la compra')
+                setShowToast(true)
+            }
+        } else {
+            setToastMessage('Debes llenar todos los campos')
+            setShowToast(true)
         }
 
     };
@@ -168,6 +214,11 @@ const Tickets = () => {
     };
 
     return (
+        <>
+        <div className='div-menu'>
+        <Button variant='dark' onClick={handleCloseModal}>
+                                Ventas
+                            </Button>    </div>
         <Container fluid className='d-flex p-0 px-5'>
             <Container className='mt-3 px-5' style={{ width: '50%' }}>
                 <h1 className='fw-semibold mb-2 taquilla-heading'>Taquilla</h1>
@@ -294,6 +345,7 @@ const Tickets = () => {
                 </Container>
             </Container>
         </Container>
+        </>
     )
 }
 

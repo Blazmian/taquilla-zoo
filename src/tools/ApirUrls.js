@@ -8,4 +8,5 @@ export const ApiUrls = createContext({
 
     // Offers
     getOffers: host + 'promocion',
+    
 })

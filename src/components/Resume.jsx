@@ -4,11 +4,11 @@ const Resume = ({ ticketInfo: propTicketInfo }) => {
   const [ticketInfo, setTicketInfo] = useState(propTicketInfo);
 
   if (!ticketInfo) {
-    // Manejar el caso en que ticketInfo no está disponible
-    return null; // O mostrar un mensaje de carga, etc.
+ 
+    return null; 
   }
 
-  // Ahora puedes acceder a las propiedades de ticketInfo de manera segura
+  
   const { email, phone, total, value, individual, child, elderly, student } = ticketInfo;
 
   console.log('Valores de las propiedades en Resume.js:', {
