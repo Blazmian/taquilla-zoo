@@ -77,7 +77,8 @@ html {
 .total {
     box-sizing: border-box;
 }
-.div-payment{
+
+.div-payment {
     display: flex;
     align-items: center;
     background-color: #8181812f;
@@ -86,8 +87,9 @@ html {
     border-radius: 20px;
     width: 30%;
 }
-.div-payment input{
-    width:100%;
+
+.div-payment input {
+    width: 100%;
     align-items: center;
     padding: 2px;
     border-radius: 20px;
@@ -95,17 +97,18 @@ html {
 }
 
 .taquilla-heading {
-    font-size: 2rem; 
-  }
+    font-size: 2rem;
+}
 
-  .div-buy{
+.div-buy {
     display: flex;
     align-items: center;
     height: 3em;
     padding: 2px;
     border-radius: 20px;
     width: 100%;
-    
+}
+
 .headerOffers {
     background-image: url('../img/zoo-fau-dt-comprar.jpeg');
     background-repeat: no-repeat;
