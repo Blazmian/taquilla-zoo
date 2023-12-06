@@ -4,15 +4,21 @@ import Delfines from '../../img/delfines.jpeg';
 import Estudiantes from '../../img/estudiantes.jpeg';
 import Canguro from '../../img/canguro.png';
 import Oferta from '../../img/gran-venta.png';
+import Oso from '../../img/bear.png';
 import { Button, Col, Container, Form, Row, Toast, ToastContainer } from "react-bootstrap"
 import { useState } from 'react';
 import Offers from './Offers';
+import Animals from './Animals';
 
-const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly, handleElderly, elderlyTotal, child, handleChild, childTotal, student, handleStudent, studentTotal, total, handleNext }) => {
+const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly, handleElderly, elderlyTotal, child, handleChild, childTotal, student, handleStudent, studentTotal, total, discount, handleNext }) => {
 
-    const [show, setShow] = useState(false)
-    const handleShow = () => setShow(true)
-    const handleClose = () => setShow(false)
+    const [showOffers, setShowOffers] = useState(false)
+    const handleShowOffers = () => setShowOffers(true)
+    const handleCloseOffers = () => setShowOffers(false)
+
+    const [showAnimals, setShowAnimals] = useState(false)
+    const handleShowAnimals = () => setShowAnimals(true)
+    const handleCloseAnimals = () => setShowAnimals(false)
 
     const [showToast, setShowToast] = useState(false)
 
@@ -26,26 +32,31 @@ const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly,
 
     return (
         <Container fluid className='d-flex p-0'>
-            <Offers show={show} handleClose={handleClose} />
+            <Animals show={showAnimals} handleClose={handleCloseAnimals} />
+            <Offers show={showOffers} handleClose={handleCloseOffers} />
             <Container className='mt-3 px-5' style={{ width: '70%' }}>
                 <div className='d-flex align-items-center mb-3'>
                     <h1 className='fw-semibold mb-0 me-auto'>Comprar entradas</h1>
-                    <Button size='lg' variant='dark' className='d-flex align-items-center rounded-5' onClick={handleShow}>
+                    <Button size='lg' variant='warning' className='d-flex align-items-center rounded-5 me-2' onClick={handleShowAnimals}>
+                        <img src={Oso} alt='Oso' className='me-2' width={30} />
+                        Ver animales
+                    </Button>
+                    <Button size='lg' variant='dark' className='d-flex align-items-center rounded-5' onClick={handleShowOffers}>
                         <img src={Oferta} alt='Oferta' className='me-2' width={30} />
                         Ver ofertas
                     </Button>
                 </div>
                 <h5 className='fw-medium mb-3'>¿Quieres pasar un día único aprendiendo todo sobre los animales?</h5>
                 <p>Tu decides la aventura y nosotros la hacemos posible en ZOO</p>
-                <Row xs={1} md={1} lg={2} className='g-4'>
+                <Row xs={1} md={1} lg={1} xl={2} xxl={3} className='g-4'>
                     <Col>
                         <div className='ticket-card'>
                             <img src={Panda} alt='Entrada individual' />
                             <div className='mt-2 d-flex align-items-center'>
                                 <h6 className='mb-0 me-auto'>Entrada individual</h6>
-                                <Button size='sm' variant='success'>
-                                    Saber más
-                                </Button>
+                                <div className='px-2 py-1 rounded-2' style={{ backgroundColor: '#198754' }}>
+                                    <h6 className='mb-0 text-white fw-normal'>Costo: $90</h6>
+                                </div>
                             </div>
                             <div className='mt-2 d-flex align-items-center'>
                                 <h6 className='mb-0 me-2'>Cantidad</h6>
@@ -60,9 +71,9 @@ const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly,
                             <img src={Adultos} alt='Entrada adultos mayores' />
                             <div className='mt-2 d-flex align-items-center'>
                                 <h6 className='mb-0 me-auto'>Entrada adultos mayores</h6>
-                                <Button size='sm' variant='success'>
-                                    Saber más
-                                </Button>
+                                <div className='px-2 py-1 rounded-2' style={{ backgroundColor: '#198754' }}>
+                                    <h6 className='mb-0 text-white fw-normal'>Costo: $60</h6>
+                                </div>
                             </div>
                             <div className='mt-2 d-flex align-items-center'>
                                 <h6 className='mb-0 me-2'>Cantidad</h6>
@@ -77,9 +88,9 @@ const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly,
                             <img src={Delfines} alt='Entrada infantil' />
                             <div className='mt-2 d-flex align-items-center'>
                                 <h6 className='mb-0 me-auto'>Entrada infantil</h6>
-                                <Button size='sm' variant='success'>
-                                    Saber más
-                                </Button>
+                                <div className='px-2 py-1 rounded-2' style={{ backgroundColor: '#198754' }}>
+                                    <h6 className='mb-0 text-white fw-normal'>Costo: $60</h6>
+                                </div>
                             </div>
                             <div className='mt-2 d-flex align-items-center'>
                                 <h6 className='mb-0 me-2'>Cantidad</h6>
@@ -94,9 +105,9 @@ const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly,
                             <img src={Estudiantes} alt='Entrada estudiantes' />
                             <div className='mt-2 d-flex align-items-center'>
                                 <h6 className='mb-0 me-auto'>Entrada estudiantil</h6>
-                                <Button size='sm' variant='success'>
-                                    Saber más
-                                </Button>
+                                <div className='px-2 py-1 rounded-2' style={{ backgroundColor: '#198754' }}>
+                                    <h6 className='mb-0 text-white fw-normal'>Costo: $70</h6>
+                                </div>
                             </div>
                             <div className='mt-2 d-flex align-items-center'>
                                 <h6 className='mb-0 me-2'>Cantidad</h6>
@@ -174,6 +185,12 @@ const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly,
                         <h4 className='text-center my-5' style={{ color: '#474747' }}>No se han seleccionado entradas.</h4>
                     )}
                     <hr />
+                    {discount > 0 &&
+                        <div className='d-flex justify-content-end align-items-center mb-3' style={{ color: 'red' }}>
+                            <h5 className='me-2 mb-0'>Descuento: -$</h5>
+                            <p className='mb-0 h5 fw-normal'>{discount}</p>
+                        </div>
+                    }
                     <div className='d-flex justify-content-end align-items-center mb-3'>
                         <h5 className='me-2 mb-0'>Total: $</h5>
                         <p className='mb-0 h5 fw-normal'>{total}</p>
