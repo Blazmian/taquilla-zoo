@@ -17,7 +17,10 @@ const ClientInterface = () => {
     const handleDiscount = (sumTotal) => {
         const date = new Date()
         if (date.getDay() === 2) {
+            setDiscount(50)
             setTotal(sumTotal * .5)
+        } else {
+            setTotal(sumTotal)
         }
     }
 
@@ -26,7 +29,15 @@ const ClientInterface = () => {
 
     const handleIndividual = (quantity) => {
         setIndividual(quantity)
-        var total = quantity * 10
+        var total = 0
+        if (quantity >= 4) {
+            total = (quantity * 90) * .85
+            var dif = (quantity * 90) * .15
+            setDiscount(dif)
+        } else {
+            var total = quantity * 90
+            setDiscount(0)
+        }
         setIndividualTotal(total)
         const sum = total + elderlyTotal + childTotal + studentTotal
         handleDiscount(sum)
@@ -37,7 +48,7 @@ const ClientInterface = () => {
 
     const handleElderly = (quantity) => {
         setElderly(quantity)
-        var total = quantity * 30
+        var total = quantity * 60
         setElderlyTotal(total)
         const sum = individualTotal + total + childTotal + studentTotal
         handleDiscount(sum)
@@ -48,7 +59,7 @@ const ClientInterface = () => {
 
     const handleChild = (quantity) => {
         setChild(quantity)
-        var total = quantity * 40
+        var total = quantity * 60
         setChildTotal(total)
         const sum = individualTotal + elderlyTotal + total + studentTotal
         handleDiscount(sum)
@@ -59,13 +70,22 @@ const ClientInterface = () => {
 
     const handleStudent = (quantity) => {
         setStudent(quantity)
-        var total = quantity * 50
+        var total = 0
+        if (quantity >= 40) {
+            total = (quantity * 70) * .6
+            var dif = (quantity * 70) * .4
+            setDiscount(dif)
+        } else {
+            total = quantity * 70
+            setDiscount(0)
+        }
         setStudentTotal(total)
         const sum = individualTotal + elderlyTotal + childTotal + total
         handleDiscount(sum)
     }
 
     const [total, setTotal] = useState(0)
+    const [discount, setDiscount] = useState(0)
 
     return (
         <>
@@ -83,6 +103,7 @@ const ClientInterface = () => {
                 handleStudent={handleStudent}
                 studentTotal={studentTotal}
                 total={total}
+                discount={discount}
                 handleNext={handleNext}
             />}
             {step === 2 && <ClientInformation
