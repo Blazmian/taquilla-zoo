@@ -4,15 +4,21 @@ import Delfines from '../../img/delfines.jpeg';
 import Estudiantes from '../../img/estudiantes.jpeg';
 import Canguro from '../../img/canguro.png';
 import Oferta from '../../img/gran-venta.png';
+import Oso from '../../img/bear.png';
 import { Button, Col, Container, Form, Row, Toast, ToastContainer } from "react-bootstrap"
 import { useState } from 'react';
 import Offers from './Offers';
+import Animals from './Animals';
 
 const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly, handleElderly, elderlyTotal, child, handleChild, childTotal, student, handleStudent, studentTotal, total, discount, handleNext }) => {
 
-    const [show, setShow] = useState(false)
-    const handleShow = () => setShow(true)
-    const handleClose = () => setShow(false)
+    const [showOffers, setShowOffers] = useState(false)
+    const handleShowOffers = () => setShowOffers(true)
+    const handleCloseOffers = () => setShowOffers(false)
+
+    const [showAnimals, setShowAnimals] = useState(false)
+    const handleShowAnimals = () => setShowAnimals(true)
+    const handleCloseAnimals = () => setShowAnimals(false)
 
     const [showToast, setShowToast] = useState(false)
 
@@ -26,11 +32,16 @@ const SelectTickets = ({ individual, handleIndividual, individualTotal, elderly,
 
     return (
         <Container fluid className='d-flex p-0'>
-            <Offers show={show} handleClose={handleClose} />
+            <Animals show={showAnimals} handleClose={handleCloseAnimals} />
+            <Offers show={showOffers} handleClose={handleCloseOffers} />
             <Container className='mt-3 px-5' style={{ width: '70%' }}>
                 <div className='d-flex align-items-center mb-3'>
                     <h1 className='fw-semibold mb-0 me-auto'>Comprar entradas</h1>
-                    <Button size='lg' variant='dark' className='d-flex align-items-center rounded-5' onClick={handleShow}>
+                    <Button size='lg' variant='warning' className='d-flex align-items-center rounded-5 me-2' onClick={handleShowAnimals}>
+                        <img src={Oso} alt='Oso' className='me-2' width={30} />
+                        Ver animales
+                    </Button>
+                    <Button size='lg' variant='dark' className='d-flex align-items-center rounded-5' onClick={handleShowOffers}>
                         <img src={Oferta} alt='Oferta' className='me-2' width={30} />
                         Ver ofertas
                     </Button>

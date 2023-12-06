@@ -8,4 +8,7 @@ export const ApiUrls = createContext({
 
     // Offers
     getOffers: host + 'promocion',
+
+    // Animals
+    getAnimals: 'https://safe-current-production.up.railway.app/api/animals',
 })

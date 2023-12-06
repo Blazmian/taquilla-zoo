@@ -35,7 +35,7 @@ const ClientInterface = () => {
             var dif = (quantity * 90) * .15
             setDiscount(dif)
         } else {
-            var total = quantity * 90
+            total = quantity * 90
             setDiscount(0)
         }
         setIndividualTotal(total)
