@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import axios from "axios"
 import { ApiUrls } from "../tools/ApirUrls"
 import Swal from 'sweetalert2'
-
+import { useNavigate } from 'react-router-dom';
 const Tickets = () => {
 
     const [individual, setIndividual] = useState(0) //Entrada individual
@@ -28,6 +28,7 @@ const Tickets = () => {
     const urls = useContext(ApiUrls)
     const [showToast, setShowToast] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
+    const navigate = useNavigate();       
     const handleIndividual = (quantity) => {
         setIndividual(quantity)
         var total = quantity * 10
@@ -215,10 +216,11 @@ const Tickets = () => {
 
     return (
         <>
-        <div className='div-menu'>
-        <Button variant='dark' onClick={handleCloseModal}>
-                                Ventas
-                            </Button>    </div>
+            <div className='div-menu'>
+                <Button variant='dark' onClick={() => navigate('/ventas')}>
+                    Ventas
+                </Button>
+            </div>
         <Container fluid className='d-flex p-0 px-5'>
             <Container className='mt-3 px-5' style={{ width: '50%' }}>
                 <h1 className='fw-semibold mb-2 taquilla-heading'>Taquilla</h1>
