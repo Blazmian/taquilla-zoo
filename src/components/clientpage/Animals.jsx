@@ -17,7 +17,6 @@ const Animals = ({ show, handleClose }) => {
 
     const getAnimals = async () => {
         const res = await axios.get(urls.getAnimals)
-        res.data.sort((a, b) => a.name.localeCompare(b.name));
         setAnimals(res.data)
     }
 
@@ -29,14 +28,16 @@ const Animals = ({ show, handleClose }) => {
             </Modal.Header>
             <Modal.Body>
                 {animals.map((animal) => (
-                    <div key={animal.id}>
-                        <div className="d-flex align-items-center mb-3 px-3">
-                            <h4 className="mb-0 fw-bold">{animal.name}</h4>
-                            <h4 className="mb-0 fw-semibold mx-3">-</h4>
-                            <h4 className="mb-0 fw-normal">{animal.pname}</h4>
+                    animal.name !== null && (
+                        <div key={animal.id}>
+                            <div className="d-flex align-items-center mb-3 px-3">
+                                <h4 className="mb-0 fw-bold">{animal.name}</h4>
+                                <h4 className="mb-0 fw-semibold mx-3">-</h4>
+                                <h4 className="mb-0 fw-normal">{animal.pname}</h4>
+                            </div>
+                            <hr />
                         </div>
-                        <hr />
-                    </div>
+                    )
                 ))}
                 <Button variant="secondary" onClick={handleClose}>Regresar</Button>
             </Modal.Body>
