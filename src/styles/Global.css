@@ -3,7 +3,7 @@ html {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .nav-body {
@@ -114,4 +114,16 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
     height: 15vh;
+}
+.div-menu {
+    background-color: #8c00a8;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+
+.div-menu button {
+    padding: 10px;
+    border-radius: 5px;
 }

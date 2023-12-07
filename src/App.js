@@ -4,10 +4,12 @@ import LogoLetras from './img/logo-letras.png';
 import { Navbar, ToastContainer } from 'react-bootstrap';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Tickets from './components/Tickets';
+import Resume from './components/Resume';
+import SelectTickets from './components/clientpage/SelectTickets';
 import ClientInterface from './components/clientpage/ClientInterface';
+import Sales from './components/Sales/Sales';
 
 const App = () => {
-
   return (
     <BrowserRouter>
       <Navbar className="nav-body p-0">
@@ -21,6 +23,7 @@ const App = () => {
       <Routes>
         <Route path="/comprar-tickets" element={<ClientInterface />} />
         <Route path="/taquilla" element={<Tickets />} />
+        <Route path="/ventas" element={<Sales />} />
       </Routes>
     </BrowserRouter>
   );
